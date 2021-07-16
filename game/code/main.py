@@ -1,7 +1,33 @@
+# -*- coding: utf-8 -*-
+
+# a signature
+doggo ='''
+                   ▄              ▄
+                  ▌▒█           ▄▀▒▌
+    WOW           ▌▒▒█        ▄▀▒▒▒▐
+                 ▐▄▀▒▒▀▀▀▀▄▄▄▀▒▒▒▒▒▐
+               ▄▄▀▒░▒▒▒▒▒▒▒▒▒█▒▒▄█▒▐
+             ▄▀▒▒▒░░░▒▒▒░░░▒▒▒▀██▀▒▌  MUCH GAME
+            ▐▒▒▒▄▄▒▒▒▒░░░▒▒▒▒▒▒▒▀▄▒▒▌
+            ▌░░▌█▀▒▒▒▒▒▄▀█▄▒▒▒▒▒▒▒█▒▐
+           ▐░░░▒▒▒▒▒▒▒▒▌██▀▒▒░░░▒▒▒▀▄▌
+           ▌░▒▄██▄▒▒▒▒▒▒▒▒▒░░░░░░▒▒▒▒▌
+          ▌▒▀▐▄█▄█▌▄░▀▒▒░░░░░░░░░░▒▒▒▐ SUCH MOBA
+          ▐▒▒▐▀▐▀▒░▄▄▒▄▒▒▒▒▒▒░▒░▒░▒▒▒▒▌
+          ▐▒▒▒▀▀▄▄▒▒▒▄▒▒▒▒▒▒▒▒░▒░▒░▒▒▐
+           ▌▒▒▒▒▒▒▀▀▀▒▒▒▒▒▒░▒░▒░▒░▒▒▒▌
+           ▐▒▒▒▒▒▒▒▒▒▒▒▒▒▒░▒░▒░▒▒▄▒▒▐
+            ▀▄▒▒▒▒▒▒▒▒▒▒▒░▒░▒░▒▄▒▒▒▒▌
+              ▀▄▒▒▒▒▒▒▒▒▒▒▄▄▄▀▒▒▒▒▄▀
+VERY RPG    ▀▄▄▄▄▄▄▀▀▀▒▒▒▒▒▄▄▀
+                   ▒▒▒▒▒▒▒▒▒▒▀▀ 
+'''
+
+
 ###################################################
 #                                                 #
 # project name: HeN                               #
-# author: porcherface                             #
+# author: riccardo, simone, andrea                #
 #                                                 #
 #                                                 #
 #                                                 #
@@ -14,13 +40,104 @@ from pawn import Pawn
 
 # pygame library, our main library
 import pygame
+import os
+import pathlib
+import sys
 
+MAIN_PATH = pathlib.Path(__file__).parent.absolute()
+FPS = 40
+clock =  pygame.time.Clock()
 # game initialization
 pygame.init()
 pygame.display.init()
+pygame.mixer.init()
+
+# resolution and game screen 
+RES_X = 1280
+RES_Y = 1080
+
+screen = pygame.display.set_mode([RES_X, RES_Y])
+
+background_path = os.path.join(MAIN_PATH,"res", "background.png")
+background = pygame.image.load(background_path)
+back_rect  = background.get_rect()
+
+
+# we spawn a player: 
+player = Pawn("player")
 
 
 #a simple game loop
-while "forever":
-    pass
+n = 0
+
+# functions and events
+def render():
+
+    # image blits
+    screen.blit(background, back_rect)
     
+    player.draw(screen)
+    # screen flip: draws all the blits
+    pygame.display.flip()
+    pygame.display.update()
+
+def update():
+    player.update()
+
+step = 4000000000
+
+def handle_events(events):
+        for event in events:
+ 
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                try:
+                    sys.exit()
+                finally:
+                    main = False
+            
+            if event.type == pygame.KEYDOWN:
+
+                if event.key == pygame.K_ESCAPE:
+                    pygame.quit()
+
+                if event.key == ord('a'):
+                    player.control(-step, 0)
+              
+                if event.key == ord('d'):
+                    player.control(step, 0)
+               
+                if event.key == ord('w'):
+                    player.control(0,-step)
+                 
+                if event.key == ord('s'):
+                    player.control(0,step)
+                
+                if event.key == ord('q'):
+                    player.spell(1)
+                
+                if event.key == ord('e'):
+                    player.spell(2)
+
+while "forever":
+
+    handle_events(pygame.event.get())
+    update()
+    render()
+    clock.tick(FPS)
+
+# main code 
+if __name__ == "__main__":
+    pass
+
+
+
+
+
+
+
+
+
+
+
+
