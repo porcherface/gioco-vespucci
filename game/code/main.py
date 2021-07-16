@@ -34,7 +34,7 @@ VERY RPG    ▀▄▄▄▄▄▄▀▀▀▒▒▒▒▒▄▄▀
 ###################################################
 
 # our game imports
-from actor import Actor
+from actor import Actor, Totem, Tree
 from character import Character
 from pawn import Pawn
 
@@ -58,13 +58,23 @@ RES_Y = 1080
 
 screen = pygame.display.set_mode([RES_X, RES_Y])
 
-background_path = os.path.join(MAIN_PATH,"res", "background.png")
+background_path = os.path.join(MAIN_PATH,"res", "back_map.png")
 background = pygame.image.load(background_path)
 back_rect  = background.get_rect()
 
 
 # we spawn a player: 
 player = Pawn("player")
+totem = Totem("totem")
+totem.place(400,400)
+
+# tree placing
+trees = []
+trees.append(Tree("tree",100,120))
+trees.append(Tree("tree",300,220))
+trees.append(Tree("tree",140,420))
+trees.append(Tree("tree",550,560))
+trees.append(Tree("tree",1200,120))
 
 
 #a simple game loop
@@ -76,6 +86,10 @@ def render():
     # image blits
     screen.blit(background, back_rect)
     
+    for tree in trees:
+        tree.draw(screen)
+
+    totem.draw(screen)
     player.draw(screen)
     # screen flip: draws all the blits
     pygame.display.flip()
@@ -83,8 +97,9 @@ def render():
 
 def update():
     player.update()
+    totem.update()
 
-step = 4000000000
+step = 9
 
 def handle_events(events):
         for event in events:
@@ -118,6 +133,9 @@ def handle_events(events):
                 
                 if event.key == ord('e'):
                     player.spell(2)
+
+                if event.key == ord(' '):
+                    player.control(0, 0)
 
 while "forever":
 
