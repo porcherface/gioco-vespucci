@@ -19,8 +19,28 @@ class Character(Actor):
         self.p_dmg = 0
         self.m_dmg = 0
 
+    def behaviour(self):
+        pass
+
+
+
 class Girilir(Character):
     def __init__(self,char_type):
         Character.__init__(self, char_type)
         self.hp = 372
         self.armor = 19
+        self.magic_res = 17
+        self.agi = 31
+        self.p_dmg = 13
+        self.m_dmg = 24
+        self.padronance = 20
+
+    def behaviour(self):
+        pass
+
+
+    def fuffa(self):
+        print("fuffo2")
+
+    def draw(self):
+        pass

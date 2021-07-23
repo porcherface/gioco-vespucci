@@ -26,6 +26,7 @@ class Actor(pygame.sprite.Sprite):
         self.type = actor_type 
         self.vx = 0
         self.vy = 0
+
     # common classes
     def draw(self, world):
         world.blit(self.image, self.rect)
@@ -33,20 +34,21 @@ class Actor(pygame.sprite.Sprite):
     def update(self):
         pass
 
-class Totem(Actor):
-
-    def __init__(self, pawn_type = "totem"):
-        Actor.__init__(self, pawn_type)
-        if pawn_type == "totem":
-            self.image = pygame.image.load(TOTEM_IMG_PATH)
-            self.rect = self.image.get_rect()
-
     def place(self, x, y):
         self.x = x 
         self.y = y
         self.rect.move_ip(x,y)
 
 
+class Totem(Actor):
+
+    def __init__(self, pawn_type = "totem",x = 0, y = 0):
+        Actor.__init__(self, pawn_type)
+        if pawn_type == "totem":
+            self.image = pygame.image.load(TOTEM_IMG_PATH)
+            self.rect = self.image.get_rect()
+        self.place(x,y)
+ 
 class Tree(Actor):
     def __init__(self, pawn_type = "tree", x = 0, y = 0):
         Actor.__init__(self, pawn_type)
@@ -55,7 +57,4 @@ class Tree(Actor):
             self.rect = self.image.get_rect()
         self.place(x,y)
         
-    def place(self, x, y):
-        self.x = x 
-        self.y = y
-        self.rect.move_ip(x,y)
+ 

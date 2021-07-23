@@ -19,10 +19,10 @@ doggo ='''
            ▐▒▒▒▒▒▒▒▒▒▒▒▒▒▒░▒░▒░▒▒▄▒▒▐
             ▀▄▒▒▒▒▒▒▒▒▒▒▒░▒░▒░▒▄▒▒▒▒▌
               ▀▄▒▒▒▒▒▒▒▒▒▒▄▄▄▀▒▒▒▒▄▀
-VERY RPG    ▀▄▄▄▄▄▄▀▀▀▒▒▒▒▒▄▄▀
+VERY RPG        ▀▄▄▄▄▄▄▀▀▀▒▒▒▒▒▄▄▀
                    ▒▒▒▒▒▒▒▒▒▒▀▀ 
 '''
-
+print(doggo)
 
 ###################################################
 #                                                 #
@@ -35,7 +35,7 @@ VERY RPG    ▀▄▄▄▄▄▄▀▀▀▒▒▒▒▒▄▄▀
 
 # our game imports
 from actor import Actor, Totem, Tree
-from character import Character
+from character import Character, Girilir
 from pawn import Pawn
 
 # pygame library, our main library
@@ -61,11 +61,16 @@ screen = pygame.display.set_mode([RES_X, RES_Y])
 background_path = os.path.join(MAIN_PATH,"res", "back_map.png")
 background = pygame.image.load(background_path)
 back_rect  = background.get_rect()
+poesia_path =  os.path.join(MAIN_PATH,"res", "poesia_riccardo.png")
+poesia = pygame.image.load(poesia_path)
+poesia_rect = poesia.get_rect()
 
-
-# we spawn a player: 
+# iafjieahfiae spawn a player: 
 player = Pawn("player")
 totem = Totem("totem")
+player.x = 400
+player.y = 400
+
 totem.place(400,400)
 
 # tree placing
@@ -76,30 +81,15 @@ trees.append(Tree("tree",140,420))
 trees.append(Tree("tree",550,560))
 trees.append(Tree("tree",1200,120))
 
+# spawnare un girilir
+un_girilir = Girilir("giri")
+un_altro_girilir = Girilir("giri")
+
 
 #a simple game loop
 n = 0
 
-# functions and events
-def render():
-
-    # image blits
-    screen.blit(background, back_rect)
-    
-    for tree in trees:
-        tree.draw(screen)
-
-    totem.draw(screen)
-    player.draw(screen)
-    # screen flip: draws all the blits
-    pygame.display.flip()
-    pygame.display.update()
-
-def update():
-    player.update()
-    totem.update()
-
-step = 9
+flag = False
 
 def handle_events(events):
         for event in events:
@@ -137,12 +127,76 @@ def handle_events(events):
                 if event.key == ord(' '):
                     player.control(0, 0)
 
+                if is_collision(player, totem) == True:
+                    if event.key == ord('f'):
+                        print("setting show_poesia as True")
+                        return True
+
+
+# functions and events
+def render(flag):
+
+    # image blits
+    screen.blit(background, back_rect)
+    
+    for tree in trees:
+        tree.draw(screen)
+
+    totem.draw(screen)
+    player.draw(screen)
+    
+    if flag == True:
+        screen.blit(poesia, poesia_rect)
+        print("la poesia di riccardo")
+
+    # screen flip: draws all the blits
+    pygame.display.flip()
+    pygame.display.update()
+
+def update():
+    player.update()
+    totem.update()
+
+    # collision with totem
+    #if is_collision(player, totem) == True:
+    #    print("bella")
+
+
+def is_collision(a1,  a2):
+
+    dx = a2.x - a1.x 
+    dy = a2.y - a1.y
+
+    print("actor1: "+str(a1.x) +" "+ str(a1.y))
+    print("actor2: "+str(a2.x) +" "+ str(a2.y))
+    collision_distance = 30
+    collision_squared = collision_distance * collision_distance
+
+    if dx > collision_distance:
+        return False
+    if dy > collision_distance:
+        return False
+
+    if dx*dx + dy*dy < collision_squared:
+        return True
+    else:
+        return False
+
+
+step = 9
+
+old_flag = False
 while "forever":
 
-    handle_events(pygame.event.get())
+    if flag:
+        old_flag = True
+
+    flag = handle_events(pygame.event.get())
     update()
-    render()
+    render(old_flag)
     clock.tick(FPS)
+
+
 
 # main code 
 if __name__ == "__main__":

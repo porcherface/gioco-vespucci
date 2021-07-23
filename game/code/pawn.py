@@ -1,5 +1,5 @@
 
-from character import Character
+from character import Character, Girilir
 
 # pygame library, our main library
 import pygame
@@ -27,6 +27,7 @@ class Pawn(Character):
         self.vx = x
         self.vy = y
 
+
     def spell(self, spell_number):
         pass
 
@@ -36,18 +37,16 @@ class Pawn(Character):
             world.blit(self.image, self.rect)
         else:
             world.blit(self.flipped, self.rect)
-    
-
-
+        
 
     def update(self):
-        self.x = self.vx
-        self.y = self.vy
 
-        self.rect.move_ip(self.x, self.y)
-        self.x = 0
-        self.y = 0
+        self.rect.move_ip(self.vx, self.vy)
+        self.x = self.rect.x
+        self.y = self.rect.y
 
+    def fuffa(self):
+        print("fuffo")
 
 # snippet
 '''
@@ -57,3 +56,8 @@ def unit_target_spell(unit_id):
 
 def auto_cast_spell():
 '''
+
+
+class Girilir_pawn(Pawn, Girilir):
+    def __init__(self):
+        passs
